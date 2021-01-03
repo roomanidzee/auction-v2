@@ -9,7 +9,8 @@ object Dependencies {
   ).map(_ % Test)
 
   private val akkaActors: Seq[ModuleID] = Seq(
-    "com.typesafe.akka" %% "akka-actor" % Versions.akka.actors
+    "com.typesafe.akka" %% "akka-actor" % Versions.akka.actors,
+    "com.typesafe.akka" %% "akka-stream" % Versions.akka.actors
   )
 
   private val akkaHttp: Seq[ModuleID] = Seq(

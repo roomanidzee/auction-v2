@@ -22,7 +22,7 @@ lazy val core = (project in file("."))
   .settings(
     name := s"$projectName",
     libraryDependencies ++= Dependencies.coreMainDeps ++ Dependencies.coreTestDeps,
-    mainClass in assembly := Some("com.romanidze.auction.Launcher"),
+    mainClass in assembly := Some("com.romanidze.auction.app.Launcher"),
     assemblyJarName in assembly := s"auction-$projectVersion.jar",
     assemblyMergeStrategy in assembly := {
       case PathList("org", "slf4j", xs@_*) => MergeStrategy.last
