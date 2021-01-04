@@ -16,6 +16,11 @@ class LotRegistrarActor(identifier: String) extends Actor with ActorLogging {
 
   import LotRegistrarActor._
 
+  override def preStart(): Unit =
+    log.info("LogRegistrarActor: going to preStart phase")
+
+  override def postStop(): Unit = log.info("LogRegistrarActor: going to postStop phase")
+
   override def receive: Receive = process(State())
 
   private def process(state: State): Receive = {

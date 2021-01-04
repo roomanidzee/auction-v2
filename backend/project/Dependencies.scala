@@ -20,7 +20,6 @@ object Dependencies {
 
   private val akkaLogging: Seq[ModuleID] = Seq(
     "com.typesafe.akka" %% "akka-slf4j" % Versions.akka.actors,
-    "ch.qos.logback"    %  "logback-classic" % Versions.logback,
     "org.apache.logging.log4j" % "log4j-core" % Versions.log4j2,
     "org.apache.logging.log4j" % "log4j-slf4j-impl" % Versions.log4j2
   )

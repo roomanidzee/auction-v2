@@ -1,6 +1,7 @@
 package com.romanidze.auction.actors
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.SupervisorStrategy.{Restart, Resume, Stop}
+import akka.actor.{Actor, ActorLogging, ActorRef, OneForOneStrategy, Props, Terminated}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
 import com.romanidze.auction.entities.LotInformation._
@@ -18,6 +19,13 @@ object LotInformationActor {
 class LotInformationActor(implicit timeout: Timeout, executor: ExecutionContext)
     extends Actor
     with ActorLogging {
+
+  // просто пример обработки
+  override def supervisorStrategy: OneForOneStrategy = OneForOneStrategy() {
+    case _: NullPointerException           => Resume
+    case _: ArrayIndexOutOfBoundsException => Restart
+    case _: IllegalArgumentException       => Stop
+  }
 
   def createLotRegistrarActor(name: String): ActorRef =
     context.actorOf(LotRegistrarActor.props(name), name)
@@ -77,6 +85,12 @@ class LotInformationActor(implicit timeout: Timeout, executor: ExecutionContext)
       def cancelLot(child: ActorRef): Unit = child.forward(Cancel)
 
       context.child(identifier).fold(notFound())(cancelLot)
+
+    case terminatedClause @ Terminated(actorRef) =>
+      log.debug(s"LotInformationActor: received terminated clause $terminatedClause")
+
+      log.info(s"actor ref $actorRef was terminated, going to stop running system")
+      context.system.terminate()
 
   }
 }
