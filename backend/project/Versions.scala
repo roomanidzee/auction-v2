@@ -9,7 +9,6 @@ object Versions {
 
   }
 
-  val logback = "1.2.3"
   val log4j2 = "2.14.0"
 
 }

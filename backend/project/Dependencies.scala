@@ -10,6 +10,7 @@ object Dependencies {
 
   private val akkaActors: Seq[ModuleID] = Seq(
     "com.typesafe.akka" %% "akka-actor" % Versions.akka.actors,
+    "com.typesafe.akka" %% "akka-remote" % Versions.akka.actors,
     "com.typesafe.akka" %% "akka-stream" % Versions.akka.actors
   )
 
@@ -25,7 +26,8 @@ object Dependencies {
   )
 
   private val akkaTest: Seq[ModuleID] = Seq(
-    "com.typesafe.akka" %% "akka-testkit" % Versions.akka.actors
+    "com.typesafe.akka" %% "akka-testkit" % Versions.akka.actors,
+    "com.typesafe.akka" %% "akka-multi-node-testkit" % Versions.akka.actors
   ).map(_ % Test)
 
   val coreMainDeps: Seq[ModuleID] = akkaActors.union(akkaHttp).union(akkaLogging)
