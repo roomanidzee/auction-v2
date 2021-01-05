@@ -14,6 +14,7 @@ object LotInformationActor {
   def props(implicit timeout: Timeout, executor: ExecutionContext): Props = Props(
     new LotInformationActor
   )
+  def name = "lot_information"
 }
 
 class LotInformationActor(implicit timeout: Timeout, executor: ExecutionContext)

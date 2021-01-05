@@ -18,14 +18,29 @@ lazy val commonSettings = Seq(
 
 lazy val core = (project in file("."))
   .settings(commonSettings)
-  .enablePlugins(JavaServerAppPackaging)
+  .enablePlugins(JavaServerAppPackaging, MultiJvmPlugin)
+  .configs(MultiJvm)
   .settings(
     name := s"$projectName",
     libraryDependencies ++= Dependencies.coreMainDeps ++ Dependencies.coreTestDeps,
-    mainClass in assembly := Some("com.romanidze.auction.app.Launcher"),
+    mainClass in assembly := Some("com.romanidze.auction.app.SimpleMain"),
     assemblyJarName in assembly := s"auction-$projectVersion.jar",
     assemblyMergeStrategy in assembly := {
       case PathList("org", "slf4j", xs@_*) => MergeStrategy.last
       case x => (assemblyMergeStrategy in assembly).value(x)
     }
   )
+
+addCommandAlias(
+  "buildFrontend",
+  "; " +
+    "set mainClass in assembly := Some(\"com.romanidze.auction.app.FrontendMain\");" +
+    " set assemblyJarName in assembly := \"auction-frontend-0.0.1.jar\" ; assembly"
+)
+addCommandAlias(
+  "buildBackend",
+  ";" +
+    " set mainClass in assembly := Some(\"com.romanidze.auction.app.BackendMain\");" +
+    " set assemblyJarName in assembly := \"auction-backend-0.0.1.jar\" ;" +
+    " assembly"
+)
