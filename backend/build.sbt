@@ -13,7 +13,8 @@ lazy val commonSettings = Seq(
     Resolver.bintrayRepo("sbt-assembly", "maven")
   ),
   scalacOptions := Seq("-unchecked", "-feature", "-deprecation", "-encoding", "utf8"),
-  scalafmtOnCompile := true
+  scalafmtOnCompile := true,
+  scriptClasspath += "../conf"
 )
 
 lazy val core = (project in file("."))
