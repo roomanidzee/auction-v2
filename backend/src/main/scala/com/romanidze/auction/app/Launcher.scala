@@ -8,7 +8,9 @@ import akka.http.scaladsl.server.Route
 import com.romanidze.auction.http.API
 import com.typesafe.config.ConfigFactory
 
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContextExecutor, Future}
+import scala.util.{Failure, Success}
 
 object Launcher extends App with RequestTimeout {
 
@@ -24,9 +26,22 @@ object Launcher extends App with RequestTimeout {
   val bindingFuture: Future[ServerBinding] = Http().newServerAt(host, port).bind(api)
 
   val log = Logging(system.eventStream, "auction")
-  bindingFuture
-    .map { serverBinding =>
-      log.info(s"RestApi bound to ${serverBinding.localAddress} ")
-    }
+
+  bindingFuture.onComplete {
+
+    case Success(value) =>
+      log.info("Server launched at http://{}:{}/",
+               value.localAddress.getHostString,
+               value.localAddress.getPort
+      )
+
+    case Failure(exception) =>
+      log.error("Server didn't start! Reason: {}", exception)
+      exception.printStackTrace()
+      system.terminate()
+
+  }
+
+  Await.result(system.whenTerminated, Duration.Inf)
 
 }
